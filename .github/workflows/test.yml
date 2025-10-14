@@ -22,6 +22,8 @@ jobs:
           cask: false
   
       - run: git -C "$(brew --repo)" checkout 9811ce75e505a7151294ec08b25c5207506f3941
+
+      - run: brew config
   
       - run: brew install-bundler-gems --groups=all
   
