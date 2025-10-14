@@ -1,0 +1,29 @@
+name: Test
+on:
+ schedule:
+   - cron: "*/15 * * * *"
+ workflow_dispatch:
+
+env:
+  HOMEBREW_DEVELOPER: 1
+  HOMEBREW_NO_AUTO_UPDATE: 1
+
+concurrency:
+  group: test
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: Homebrew/actions/setup-homebrew@main
+        with:
+          core: false
+          cask: false
+  
+      - run: git -C "$(brew --repo)" checkout 9811ce75e505a7151294ec08b25c5207506f3941
+  
+      - run: brew install-bundler-gems --groups=all
+  
+      - uses: owenthereal/action-upterm@v1
+        if: failure()
